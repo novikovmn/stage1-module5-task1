@@ -14,15 +14,14 @@ public class InterfaceCreator {
 
     public Predicate<List<String>> isValuesStartWithUpperCase() {
         return strings -> {
-            boolean flag = true;
             for (String str: strings) {
                 String firstUpperCaseLetter = str.substring(0, 1).toUpperCase();
                 String curLetter = str.substring(0, 1);
                 if (!curLetter.equals(firstUpperCaseLetter)) {
-                    return !flag;
+                    return false;
                 }
             }
-            return flag;
+            return true;
         };
     }
 
@@ -39,16 +38,13 @@ public class InterfaceCreator {
 
     public Supplier<List<String>> filterCollection(List<String> values) {
         return () -> {
-            String regex = " |\\.";
             List<String> result = new ArrayList<>();
             for (String str: values) {
-                String[] words = str.split(regex);
+                String[] words = str.split("[ \\.]");
                 String upperCaseLetter = str.substring(0, 1).toUpperCase();
                 String curLetter = str.substring(0, 1);
-                if (words.length > 3) {
-                    if (curLetter.equals(upperCaseLetter) && str.endsWith(".")) {
+                if (words.length > 3 && (curLetter.equals(upperCaseLetter) && str.endsWith("."))) {
                         result.add(str);
-                    }
                 }
             }
             return result;
